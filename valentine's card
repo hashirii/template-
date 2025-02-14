@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Card</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: pink;
+            margin: 0;
+            overflow: hidden;
+            flex-direction: column;
+            position: relative;
+        }
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://www.transparenttextures.com/patterns/floral-pattern.png');
+            filter: blur(5px);
+            z-index: -1;
+        }
+        .card-container {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+        .card {
+            position: absolute;
+            width: 300px;
+            height: 400px;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 10px;
+            background-size: cover;
+            transition: transform 0.8s;
+            transform-origin: left;
+            background-image: url('https://i.postimg.cc/3Nz6sd8L/Trendy-floral-pattern-modern-floral-pattern-multi-color-pattern-multi-florals-roses-lotuses-peonies.jpg');
+            backface-visibility: hidden;
+        }
+        .card.open {
+            transform: rotateY(-180deg);
+        }
+        .message {
+            position: absolute;
+            width: 300px;
+            height: 400px;
+            background: #ffccd5;
+            color: black;
+            text-align: center;
+            font-size: 18px;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://i.postimg.cc/sX45F83b/elegant-floral-pattern-small-hand-260nw-2560553349.webp');
+            background-size: cover;
+            background-position: center;
+            transform: rotateY(180deg);
+            backface-visibility: hidden;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+        .image-below-text-second-page {
+            width: 100%;
+            height: 200px;
+            background-image: url('https://i.postimg.cc/7Lvz5D6p/IMG-20250208-174949-188.jpg');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin-top: 10px;
+        }
+        .popup-text {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            text-align: center;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 1s ease-in-out, visibility 1s;
+            z-index: 10;
+        }
+        .kiss-emoji {
+            position: absolute;
+            font-size: 100px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="popup-text" id="popup-text">Double tap to turn the page</div>
+    <div class="card-container" id="card-container">
+        <div class="card" id="card">
+            <div class="title">Happy Valentine's Day Ipshita</div>
+        </div>
+        <div class="message" id="message">
+            <div class="title">You are the most special person in my life. Wishing you all the love and happiness today and always! ❤️</div>
+            <div class="image-below-text-second-page"></div>
+        </div>
+    </div>
+    <div class="kiss-emoji" id="kiss-emoji">😘</div>
+    <audio id="crowd-audio" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
+    
+    <script>
+        let card = document.getElementById("card");
+        let message = document.getElementById("message");
+        let cardContainer = document.getElementById("card-container");
+        let popupText = document.getElementById("popup-text");
+        let kissEmoji = document.getElementById("kiss-emoji");
+        let crowdAudio = document.getElementById("crowd-audio");
+        let lastTap = 0;
+
+        window.onload = function() {
+            popupText.style.opacity = "1";
+            popupText.style.visibility = "visible";
+            setTimeout(() => {
+                popupText.style.opacity = "0";
+                popupText.style.visibility = "hidden";
+            }, 3000);
+        };
+
+        cardContainer.addEventListener("touchend", (event) => {
+            let currentTime = new Date().getTime();
+            let tapLength = currentTime - lastTap;
+            if (tapLength < 300 && tapLength > 0) {
+                if (card.classList.contains("open")) {
+                    card.classList.remove("open");
+                    message.style.transform = "rotateY(180deg)";
+                    showKissEmoji();
+                } else {
+                    card.classList.add("open");
+                    message.style.transform = "rotateY(0deg)";
+                    crowdAudio.play();
+                }
+            }
+            lastTap = currentTime;
+        });
+
+        function showKissEmoji() {
+            kissEmoji.style.opacity = "1";
+            setTimeout(() => {
+                kissEmoji.style.opacity = "0";
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
